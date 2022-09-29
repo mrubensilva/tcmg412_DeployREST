@@ -9,5 +9,4 @@ Review the following sections in the [Installation Documentation for Flask](http
 - Install Flask
 
 ## Running the app
-`(venv)─(kali㉿kali)-[~/Desktop/DeployREST]
-└─$ python DeployREST.py`
+`(venv)─[~/Desktop/DeployREST] $ python DeployREST.py`
