@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import hashlib
 
 # Create the main Flask app object
@@ -43,9 +43,9 @@ def md5_encode(string):
  
   string_to_md5 = hashlib.md5(default_string.encode('utf-8')).hexdigest()
  
-  # Print 'string' and 'string_to_md5' to site
+  # Return JSON payload consisting of input value and output value
 
-  return f"<h1>String</h1>\n{default_string}\n<h2>MD5</h2>\n{string_to_md5}"
+  return {"input": default_string, "output": string_to_md5}
 
 # Check if program is called directly (like `python basic_flask.py`),
 # Run the Flask server and wait for requests
