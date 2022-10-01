@@ -4,48 +4,26 @@ import hashlib
 # Create the main Flask app object
 app = Flask(__name__)
 
-# Use the magic decorator to map a function to a URL
-@app.route('/')
-def hello_world():
-  
-  # In the most basic case, just returning a string from the function will tell Flask
-  #   to send back the string as the HTTP response body with default headers
-  return "<h1>Hello, World!</h1>"
-
-
-# Here's an example of including a variable in the URL, and passing it into the function
-@app.route('/howdy/<name>')
-def howdy_world():
-  
-  # Setting up a default value, in case none is provided in the URL
-  addressee = 'World'
-  
-  # Check to see if 'name' has a value, and overwrite the default
-  if name:
-    addressee = name
-  
-  # Use a Python f-string to customize the return value
-  return f"<h1>Howdy, {addressee}!</h1>"
+# Set '/md5' app route
+@app.route('/md5')
+# Set '/md5/' app route
+@app.route('/md5/')
+# Build function 
+def default_md5():
+# Encode 'Hello World' as md5
+  hello_md5 = hashlib.md5('Hello World'.encode('utf-8')).hexdigest() 
+  # Return JSON payload consisting of input value and output value
+  return {"input": 'Hello World', "output": hello_md5}
 
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
-def md5_encode(string):
-
-  # Set default value for 'default_string' if no value in '<string>'
-  default_string = 'Hello World'
-  
-  # Overwrite 'default_string' if 'string' has value
-  if string:
-    default_string = str(string)
-
+def md5_encode(string):  
   # Encode default_string as md5
- 
-  string_to_md5 = hashlib.md5(default_string.encode('utf-8')).hexdigest()
+  string_to_md5 = hashlib.md5(str(string).encode('utf-8')).hexdigest()
  
   # Return JSON payload consisting of input value and output value
-
-  return {"input": default_string, "output": string_to_md5}
+  return {"input": string, "output": string_to_md5}
 
 # Check if program is called directly (like `python basic_flask.py`),
 # Run the Flask server and wait for requests
