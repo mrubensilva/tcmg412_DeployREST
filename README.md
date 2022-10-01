@@ -1,4 +1,4 @@
-# tcmg412_DeploytREST
+# tcmg412_DeployREST
 
 ## Prerequisites
 
