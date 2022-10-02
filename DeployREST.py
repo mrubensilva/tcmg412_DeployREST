@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, escape
 import hashlib
 
 # Create the main Flask app object
@@ -16,11 +16,11 @@ def default_md5():
   return {"input": 'Hello World', "output": hello_md5}
 
 # Set '/md5/<string>' app route
-@app.route('/md5/<string>')
+@app.route('/md5/<string>/')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
 def md5_encode(string):  
   # Encode default_string as md5
-  string_to_md5 = hashlib.md5(str(string).encode('utf-8')).hexdigest()
+  string_to_md5 = hashlib.md5(escape(string).encode('utf-8')).hexdigest()
  
   # Return JSON payload consisting of input value and output value
   return {"input": string, "output": string_to_md5}
