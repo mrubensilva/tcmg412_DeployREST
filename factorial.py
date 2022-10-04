@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, escape
+from flask import Flask
 import hashlib
 
 # Create the main Flask app object
