@@ -32,13 +32,13 @@ def factorial():
 # Pass value of '<num>' to 'num' in 'factorial_made' function
 def factorial_made(num):
     factorialOutput = 1
+    num1 = int(num)
     
     while True:
         try:
             if num < 0:
                 return "Not a valid number!"
             #calculate the factorial
-            num1 = int(num)
             for i in range(1, num1 + 1):
                 factorialOutput = factorialOutput * i
             # Return JSON payload consisting of input value and output value
