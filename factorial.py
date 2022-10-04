@@ -1,5 +1,4 @@
 from flask import Flask
-import hashlib
 
 # Create the main Flask app object
 app = Flask(__name__)
