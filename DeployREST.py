@@ -29,3 +29,43 @@ def md5_encode(string):
 # Run the Flask server and wait for requests
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4000')
+    
+#This endpoint is the only one that has a side-effect. Your API should attempt to post the value of the input into a Slack channel in our class Slack team, then return a boolean value that indicates whether the message was successfully posted to the channel. 
+#instaall slack client
+pip install slackclient
+import slack
+#connect slack token
+SLACK_TOKEN="<xoxb-4176399459060-4173888784227-TEB1KPyN1XJzJB5EL4JasfrV>”
+#apptext
+client = slack.WebClient(token=SLACK_TOKEN)
+client.chat_postMessage(channel='#justtest',text='>^..^<')
+#install flask and event
+$ pip install flask
+
+$ pip install slackeventsapi
+#create flask app
+import slack
+from flask import Flask
+from slackeventsapi import SlackEventAdapter
+ 
+SLACK_TOKEN="<xoxb-4176399459060-4173888784227-TEB1KPyN1XJzJB5EL4JasfrV>"
+SIGNING_SECRET="<c1adeb5ae4fea9963fc9939accf460f2>"
+ 
+app = Flask(__name__)
+slack_event_adapter = SlackEventAdapter(SIGNING_SECRET, '/slack/events', app)
+ 
+client = slack.WebClient(token=SLACK_TOKEN)
+ 
+@ slack_event_adapter.on('message')
+def message(payload):
+    print(payload)
+    event = payload.get('event', {})
+    channel_id = event.get('channel')
+    user_id = event.get('user')
+    text = event.get('text')
+ 
+    if text == "Hi":
+        client.chat_postMessage(channel=channel_id,text=">^..^<")
+ 
+if __name__ == "__main__":
+    app.run(debug=True)
