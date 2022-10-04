@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 # Create the main Flask app object
 app = Flask(__name__)
@@ -20,31 +20,32 @@ def factorial():
                 for i in range(1, factorialInput + 1):
                     factorialOutput = factorialOutput * i
             # Return JSON payload consisting of input value and output value
-                return {"input": factorialInput, "output": factorialOutput}
+                return jsonify(input = factorialInput, output = factorialOutput)
             else:
-                return "Error: Not a valid number"
+                return jsonify(input = factorialInput, output = "That's not a valid number!")
             break
         except:
-            return "That's not a valid number!"
+            return jsonify(input = factorialInput, output = "That's not a valid number!")
 
 # Set '/factorial/<num>' app route
 @app.route('/factorial/<num>/')
 # Pass value of '<num>' to 'num' in 'factorial_made' function
 def factorial_made(num):
     factorialOutput = 1
-    num1 = int(num)
     
     while True:
         try:
-            if num < 0:
-                return "Not a valid number!"
+            num1 = int(num)
+            if num1 < 0:
+                return jsonify(input = num, output = "That's not a valid number!")
             #calculate the factorial
+            
             for i in range(1, num1 + 1):
                 factorialOutput = factorialOutput * i
             # Return JSON payload consisting of input value and output value
-            return {"input": num, "output": factorialOutput}
+            return jsonify(input = num, output = factorialOutput)
         except:
-            return "That's not a valid number!"
+            return jsonify(input = num, output = "That's not a valid number!")
  
 # Run the Flask server and wait for requests
 if __name__ == '__main__':
