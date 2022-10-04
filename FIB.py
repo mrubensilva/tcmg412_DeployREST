@@ -4,8 +4,8 @@ app = Flask(__name__)
 
 @app.route('/<int:number>')
 def fibonacci(number=1):
-    return "Howdy!!<hr>fib("+ str(number) + "): " + str(fib(number))
-
+    return jsonify(input = "fib(" + str(number) + "): ", output = str(fib(number)))
+    #return "Howdy!!<hr>fib("+ str(number) + "): " + str(fib(number))
 
 def fib(n):
     if n == 0:
