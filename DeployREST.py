@@ -121,13 +121,9 @@ def fib(n):
  
 #     if text == "Hi":
 #         client.chat_postMessage(channel=channel_id,text=">^..^<")
- 
 
-# Check if program is called directly (like `python basic_flask.py`),
-# Run the Flask server and wait for requests
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='4000')
- 
+
+#ifprime
 @click.command()
 @click.group(chain=True)	#Group every function together. 'chain=true' allows for multiple commands to be chained together
 @click.pass_context		#Passes the value to every command with this under it
@@ -159,3 +155,8 @@ def prime_check(n):
 				break
 			elif(n % i > 0):
 				return jsonify(input=n, output=True)
+# Check if program is called directly (like `python basic_flask.py`),
+# Run the Flask server and wait for requests
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='4000')
+ 
