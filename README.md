@@ -9,4 +9,5 @@ Review the following sections in the [Installation Documentation for Flask](http
 - Install Flask
 
 ## Running the app
+`(venv)─[~/Desktop/DeployREST] $ pip install slackclient`
 `(venv)─[~/Desktop/DeployREST] $ python DeployREST.py`
