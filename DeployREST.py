@@ -4,17 +4,6 @@ import hashlib
 # Create the main Flask app object
 app = Flask(__name__)
 
-# Set '/md5' app route
-@app.route('/md5')
-# Set '/md5/' app route
-@app.route('/md5/')
-# Build function 
-def default_md5():
-# Encode 'Hello World' as md5
-  hello_md5 = hashlib.md5('Hello World'.encode('utf-8')).hexdigest() 
-  # Return JSON payload consisting of input value and output value
-  return {"input": 'Hello World', "output": hello_md5}
-
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>/')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
