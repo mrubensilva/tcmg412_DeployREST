@@ -127,7 +127,7 @@ def prime_check(n):
 
 ## Then I'll run the call to the function in python IDLE as:
 
-isPrime(input("Enter a number.\n"))  
+prime_check(input("Enter a number.\n"))  
 
 # Check if program is called directly (like `python basic_flask.py`),
 # Run the Flask server and wait for requests
