@@ -111,23 +111,26 @@ def fib(n):
 #     if text == "Hi":
 #         client.chat_postMessage(channel=channel_id,text=">^..^<")
 
-# Set '/is-prime/<int:n>' app route
-@app.route('/is-prime/<int:n>')
-def prime_check(n): 
-    n = int(n)
-    test = None 
-   for x in range(2, n):
-        if (n%x) == 0:
-            test = False
-            print(f"{test}, the number {n} is not a prime!")
-            break
-    else:
-        test = True
-        print(f"{test}ly, the number {n} is a prime!")
-
-## Then I'll run the call to the function in python IDLE as:
-
-prime_check(input("Enter a number.\n"))  
+# Set '/is-prime/<int>' app route
+@app.route('/is-prime/<n>')
+def is_prime(n): 
+  try:
+    n = int(n) 
+  except ValueError:
+    return Response("Error not a number", status=400) 
+   
+  if n == 1:
+    return jsonify(input=n, output=False)
+      
+  solve_prime = int(n / 2)
+  for i in range(2, solve_prime):
+    if n % i == 0:
+      return jsonify(input=n, output=False)
+      
+  return jsonify(input=n, output=True)
+        
+  
+    
 
 # Check if program is called directly (like `python basic_flask.py`),
 # Run the Flask server and wait for requests
