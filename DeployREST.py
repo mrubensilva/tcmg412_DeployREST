@@ -113,16 +113,21 @@ def fib(n):
 
 # Set '/is-prime/<int:n>' app route
 @app.route('/is-prime/<int:n>')
-def test_prime(n):
-    if (n==1):
-        return {"input": n, "output": False}
-    elif (n==2):
-        return {"input": n, "output": True}
+def prime_check(n): 
+    n = int(n)
+    test = None 
+   for x in range(2, n):
+        if (n%x) == 0:
+            test = False
+            print(f"{test}, the number {n} is not a prime!")
+            break
     else:
-        for x in range(2,n):
-            if(n % x==0):
-                return {"input": n, "output": False}
-        return {"input": n, "output": True}    
+        test = True
+        print(f"{test}ly, the number {n} is a prime!")
+
+## Then I'll run the call to the function in python IDLE as:
+
+isPrime(input("Enter a number.\n"))  
 
 # Check if program is called directly (like `python basic_flask.py`),
 # Run the Flask server and wait for requests
