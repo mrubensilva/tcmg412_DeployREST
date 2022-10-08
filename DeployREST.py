@@ -76,20 +76,20 @@ def fibonacci(number=1):
         
     #return "Howdy!!<hr>fib("+ str(number) + "): " + str(fib(number))
 
-def fib(n):
-    while True:
-        try:
-            n1 = int(n)
-            if int(n1) < 1:
-                return "Error: not a valid number"
-            if n1 == 0:
-                return 0
-            elif n1 == 1:
-                return 1
-            else:
-                return fib(n1 - 1) + fib(n1 - 2)
-        except:
-            return jsonify(input = n1, output = "not a valid number")
+#def fib(n):
+   # while True:
+       # try:
+         #   n1 = int(n)
+         #   if int(n1) < 1:
+          #      return "Error: not a valid number"
+         #   if n1 == 0:
+          #      return 0
+         #   elif n1 == 1:
+          #      return 1
+         #   else:
+          #      return fib(n1 - 1) + fib(n1 - 2)
+      #  except:
+          #  return jsonify(input = n1, output = "not a valid number")
 
 #slack alert
 # SLACK_TOKEN="<xoxb-4176399459060-4173888784227-TEB1KPyN1XJzJB5EL4JasfrV>"
