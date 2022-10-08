@@ -64,7 +64,7 @@ def factorial_made(num):
 
 @app.route('/fibonacci/<int:number>')
 def fibonacci(number=1):
-  #remove while true and try catch and defalut value (line above this)
+  #remove while true and try catch and defalut value (line above this) input needs to be *number* and output should be fib(number)
     while True:
         try:
             n1 = int(number)
