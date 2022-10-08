@@ -97,7 +97,7 @@ url = "https://hooks.slack.com/services/T257UBDHD/B046EJQFE8G/zm2HamLnRjLrhfclxj
  slack_data = {'text': 'message here'}
   
   # use the `requests` module to POST to Slack
-  r = requests.post(url, json=slack_data)
+  r = requests.post(url, json={'text': >^..^<})
   
   # you can check the status code of the response from Slack
   if r.status_code == 200:
