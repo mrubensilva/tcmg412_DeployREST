@@ -7,7 +7,7 @@ from slackeventsapi import SlackEventAdapter
 app = Flask(__name__)
 
 # Set '/md5/<string>' app route
-@app.route('/md5/<string>/')
+@app.route('/md5/<string>')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
 def md5_encode(string):  
   # Encode default_string as md5
