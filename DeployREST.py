@@ -61,10 +61,10 @@ def factorial_made(num):
             return jsonify(input = num, output = factorialOutput)
         except:
             return "Page not found", 404
-@app.route('/fibonacci')
 
 @app.route('/fibonacci/<int:number>')
 def fibonacci(number=1):
+  #remove while true and try catch and defalut value (line above this)
     while True:
         try:
             n1 = int(number)
@@ -80,7 +80,7 @@ def fib(n):
     while True:
         try:
             n1 = int(n)
-            if int(n1) < 0:
+            if int(n1) < 1:
                 return "Error: not a valid number"
             if n1 == 0:
                 return 0
