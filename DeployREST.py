@@ -92,26 +92,19 @@ def fibonacci(number=1):
           #  return jsonify(input = n1, output = "not a valid number")
 
 #slack alert
-# SLACK_TOKEN="<xoxb-4176399459060-4173888784227-TEB1KPyN1XJzJB5EL4JasfrV>"
-# SIGNING_SECRET="<c1adeb5ae4fea9963fc9939accf460f2>"
- 
-# app = Flask(__name__)
-# slack_event_adapter = SlackEventAdapter(SIGNING_SECRET, '/slack/events', app)
- 
-# client = slack.WebClient(token=SLACK_TOKEN)
- 
-# @ slack_event_adapter.on('message')
-# def message(payload):
-#     print(payload)
-#     event = payload.get('event', {})
-#     channel_id = event.get('channel')
-#     user_id = event.get('user')
-#     text = event.get('text')
- 
-#     if text == "Hi":
-#         client.chat_postMessage(channel=channel_id,text=">^..^<")
+import requests
+url = "https://hooks.slack.com/services/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"
+ slack_data = {'text': 'message here'}
+  
+  # use the `requests` module to POST to Slack
+  r = requests.post(url, json=slack_data)
+  
+  # you can check the status code of the response from Slack
+  if r.status_code == 200:
+    # do something if Slack worked
+  else:
+    # do something else if Slack didn't work
 
-# Set '/is-prime/<int>' app route
 @app.route('/is-prime/<n>')
 def is_prime(n): 
   try:
