@@ -14,6 +14,7 @@ def md5_encode(string):
   string_to_md5 = hashlib.md5(escape(string).encode('utf-8')).hexdigest()
  
   # Return JSON payload consisting of input value and output value
+  #change to jsonify
   return {"input": string, "output": string_to_md5}
 
 
@@ -42,7 +43,7 @@ def factorial():
             return jsonify(input = factorialInput, output = "That's not a valid number!")
 
 # Set '/factorial/<num>' app route
-@app.route('/factorial/<num>/')
+@app.route('/factorial/<num>')
 # Pass value of '<num>' to 'num' in 'factorial_made' function
 def factorial_made(num):
     factorialOutput = 1
