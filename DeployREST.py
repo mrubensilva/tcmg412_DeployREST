@@ -59,8 +59,7 @@ def factorial_made(num):
             # Return JSON payload consisting of input value and output value
             return jsonify(input = num, output = factorialOutput)
         except:
-            return jsonify(input = num, output = "That's not a valid number!")
-
+            return "Page not found", 404
 @app.route('/fibonacci')
 
 @app.route('/fibonacci/<int:number>')
@@ -116,18 +115,19 @@ def fib(n):
 def is_prime(n): 
   try:
     n = int(n) 
-  except ValueError:
-    return Response("Error not a number", status=400) 
-   
-  if n == 1:
-    return jsonify(input=n, output=False)
-      
-  solve_prime = int(n / 2)
-  for i in range(2, solve_prime):
-    if n % i == 0:
-      return jsonify(input=n, output=False)
-      
-  return jsonify(input=n, output=True)
+
+    if n == 1:
+        return jsonify(input=n, output=False)
+
+    solve_prime = int(n / 2)
+    for i in range(2, solve_prime):
+        if n % i == 0:
+            return jsonify(input=n, output=False)
+
+    return jsonify(input=n, output=True)
+
+  except:
+    return "Error not a number", 404
         
   
     
