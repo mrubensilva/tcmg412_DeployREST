@@ -1,28 +1,22 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, escape
+
+def fib(n):     # assumes that n > 0
+    f_1, f_2 = 0, 1
+    ret = [0]
+    while f_2 <= n:
+        ret.append(f_2)
+        f_1, f_2 = f_2, f_1 + f_2
+    return ret
 
 # Create the main Flask app object
 app = Flask(__name__)
 
-@app.route('/fibonacci')
-
 @app.route('/fibonacci/<int:number>')
 def fibonacci(number=1):
-    return jsonify(input = "fib(" + str(number) + "): ", output = str(fib(number)))
-    #return "Howdy!!<hr>fib("+ str(number) + "): " + str(fib(number))
+        if int(number) < 0:
+            return "Error: not a valid number"
+        return jsonify(input = number, output = fib(number))
 
-def fib(n):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        return fib(n - 1) + fib(n - 2)
-    if n < 0:
-        return "Error: not a valid number"
-
-# Return JSON payload consisting of input value and output value
-    return {"input": number, "output": fibonacci }
-
-    
+# Run the Flask server and wait for requests
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4000')
