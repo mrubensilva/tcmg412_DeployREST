@@ -15,4 +15,5 @@ Review the following sections in the [Installation Documentation for Flask](http
 
 ## Run with Docker
 `docker pull msilv204/deployrest-tcmg412:latest`  
-`docker run -p 8000:4000 msilv204/deployrest-tcmg412:latest`
+`docker run -p 8000:4000 msilv204/deployrest-tcmg412:latest`  
+[https://hub.docker.com/r/msilv204/deployrest-tcmg412](https://hub.docker.com/r/msilv204/deployrest-tcmg412)
