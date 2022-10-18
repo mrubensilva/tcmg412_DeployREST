@@ -5,10 +5,10 @@ def set_url(string):
 
 input_list = [
     "md5/test", 
-    "md5/hello%20world", 
+    "md5/hello world", 
     "md5",
     "factorial/4",
-    "factorial/5"
+    "factorial/5",
     "factorial/test",
     "factorial/0",
     "fibonacci/8",
@@ -21,23 +21,51 @@ input_list = [
     "is-prime/6",
     "is-prime/15",
     "is-prime/37",
-    "is-prime/one" 
+    "is-prime/one",
+    "slack-alert/test",
+    "slack-alert/This is a test" 
     ]
 
 output_list = list(map(set_url, input_list))
 
 statcodes = []
 
+emoji_pass = "\U0001F197" 
+
+emoji_fail = "\U0001F6D1"
+
+line_break = "\n"
+
 def collect_statcodes(url):
-  for x in url:
-    response=requests.get(x)
+  for i in url:
+    response=requests.get(i)
     statcodes.append(response.status_code)
-    # print(f"{'* [GET]': <10}{x: ^15}{response.status_code: >10}")
 
 collect_statcodes(output_list)
 
-print(statcodes)
+def validate_200_status():
+    for i in [0, 1, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 18, 19]:
+        if statcodes[i] == 200:
+            statcodes[i] = f"{'* [GET]': <10}{str(input_list[i]): ^15}{emoji_pass: >10}"
+        else:
+            statcodes[i] = f"{'* [GET]': <10}{str(input_list[i]): ^15}{emoji_fail : >10}{line_break + ' - Expected HTTP Status: 200': >10}{line_break + ' - Actual HTTP Status: ' + str(statcodes[i]): >10}"
 
-print(statcodes[2])
+def validate_missing():
+    for i in [2, 5, 10, 17]:
+        if statcodes[i] == 400 or 404 or 405:
+            statcodes[i] = f"{'* [GET]': <10}{str(input_list[i]): ^15}{emoji_pass: >10}"
+        else:
+            statcodes[i] = f"{'* [GET]': <10}{str(input_list[i]): ^15}{emoji_fail : >10}{line_break + ' - Expected HTTP Status: [400, 404, 405]': >10}{line_break + ' - Actual HTTP Status: ' + str(statcodes[i]): >10}"
 
-# print(response.text)
+
+# def test_inputs():
+#     response=requests.get(output_list[7])
+#     print(response.text)
+
+validate_200_status()
+
+validate_missing()
+
+print("\nTesting REST API on localhost:4000...\n")
+
+print(*statcodes,sep='\n')
