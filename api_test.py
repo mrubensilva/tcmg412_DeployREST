@@ -57,14 +57,43 @@ def validate_missing():
         else:
             statcodes[i] = f"{'* [GET]': <10}{str(input_list[i]): ^15}{emoji_fail : >10}{line_break + ' - Expected HTTP Status: [400, 404, 405]': >10}{line_break + ' - Actual HTTP Status: ' + str(statcodes[i]): >10}"
 
+def test_fib8():
+    a = [0, 1, 1, 2, 3, 5, 8]
+    r = requests.get(output_list[7])
+    d = r.json()
+    if a == d['output']:
+         statcodes[7] = f"{'* [GET]': <10}{str(input_list[7]): ^15}{emoji_pass: >10}"
+    else:
+        statcodes[7] = f"{'* [GET]': <10}{str(input_list[7]): ^15}{emoji_fail : >10}{line_break + ' - Expected output: ' + str(a): >10}{line_break + ' - Actual output: ' + str(d['output']): >10}"
 
-# def test_inputs():
-#     response=requests.get(output_list[7])
-#     print(response.text)
+def test_fib35():
+    a = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+    r = requests.get(output_list[8])
+    d = r.json()
+    if a == d['output']:
+         statcodes[8] = f"{'* [GET]': <10}{str(input_list[8]): ^15}{emoji_pass: >10}"
+    else:
+        statcodes[8] = f"{'* [GET]': <10}{str(input_list[8]): ^15}{emoji_fail : >10}{line_break + ' - Expected output: ' + str(a): >10}{line_break + ' - Actual output: ' + str(d['output']): >10}"
+
+def test_fib1():
+    a = [0, 1, 1]
+    r = requests.get(output_list[9])
+    d = r.json()
+    if a == d['output']:
+         statcodes[9] = f"{'* [GET]': <10}{str(input_list[9]): ^15}{emoji_pass: >10}"
+    else:
+        statcodes[9] = f"{'* [GET]': <10}{str(input_list[9]): ^15}{emoji_fail : >10}{line_break + ' - Expected output: ' + str(a): >10}{line_break + ' - Actual output: ' + str(d['output']): >10}"
+
 
 validate_200_status()
 
 validate_missing()
+
+test_fib8()
+
+test_fib35()
+
+test_fib1()
 
 print("\nTesting REST API on localhost:4000...\n")
 
