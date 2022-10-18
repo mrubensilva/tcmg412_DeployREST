@@ -11,7 +11,7 @@ Review the following sections in the [Installation Documentation for Flask](http
 `(venv)─[~/Desktop/DeployREST] $ pip install slackeventsapi` 
 
 ### Running the app 
-`(venv)─[~/Desktop/DeployREST] $ python DeployRestFinal.py`
+`(venv)─[~/Desktop/DeployREST] $ python server.py`
 
 ## Run with Docker
 `docker pull msilv204/deployrest-tcmg412:latest`  
