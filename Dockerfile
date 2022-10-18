@@ -11,4 +11,4 @@ RUN pip install requests
 RUN pip install Flask
 RUN pip install slackeventsapi
 # Start container app
-CMD ["python", "DeployRestFinal.py"]
+CMD ["python", "server.py"]
