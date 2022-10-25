@@ -1,3 +1,4 @@
+import os
 import string
 import requests
 from urllib import request, response
@@ -88,4 +89,4 @@ def is_prime(n):
 # Check if program is called directly (like `python basic_flask.py`),
 # Run the Flask server and wait for requests
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='4000')
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
