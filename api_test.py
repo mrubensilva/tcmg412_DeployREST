@@ -1,7 +1,7 @@
 import requests
 
 def set_url(string):
-    return "http://localhost:4000/" + string
+    return "https://app-6eu4mzqmma-uc.a.run.app/" + string
 
 input_list = [
     "md5/test", 
