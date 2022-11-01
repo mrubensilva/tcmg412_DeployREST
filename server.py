@@ -1,10 +1,13 @@
 import os
 import string
 import requests
+import redis
 from urllib import request, response
 from flask import Flask, jsonify, escape
 import hashlib
 from slackeventsapi import SlackEventAdapter
+
+redis_cache = redis.Redis(host='0.0.0.0', port=int(os.environ.get("PORT", 6379)), db=0)
 
 def fib(n):     # assumes that n > 0
     f_1, f_2 = 0, 1
@@ -16,6 +19,14 @@ def fib(n):     # assumes that n > 0
 
 # Create the main Flask app object
 app = Flask(__name__)
+
+@app.route('/set/<string:key>/<string:value>')
+def set(key, value):
+	if redis_cache.exists(key):
+		pass
+	else:
+		value = redis_cache.set(key, value)
+	return 'OK'
 
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
