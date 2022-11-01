@@ -1,13 +1,10 @@
 import os
 import string
 import requests
-import redis
 from urllib import request, response
 from flask import Flask, jsonify, escape
 import hashlib
 from slackeventsapi import SlackEventAdapter
-
-r = redis.Redis(host='0.0.0.0', port=int(os.environ.get("PORT", 6379)), db=0)
 
 def fib(n):     # assumes that n > 0
     f_1, f_2 = 0, 1
