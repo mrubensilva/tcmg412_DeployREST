@@ -1,7 +1,12 @@
-FROM python:3.9-slim
-ENV PYTHONUNBUFFERED True
-ENV APP_HOME /app
-WORKDIR $APP_HOME
-COPY . ./
-RUN pip install Flask gunicorn requests slackeventsapi redis
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 server:app
+# Init Alpine base image (small Linux distro)
+FROM python:3.9-alpine
+# Update pip
+RUN pip install --upgrade pip
+# Set working directory
+WORKDIR /code
+# Copy contents into WORKDIR
+ADD . /code
+# Install dependencies
+RUN pip install -r requirements.txt
+# Start container app
+CMD ["python", "app.py"]
