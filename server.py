@@ -1,11 +1,11 @@
 import os
 import string
-import requests
+import hashlib
 import redis
 from urllib import request, response
-from flask import Flask, jsonify, escape
-import hashlib
+from flask import Flask, jsonify, request, escape
 from slackeventsapi import SlackEventAdapter
+
 
 def fib(n):     # assumes that n > 0
     f_1, f_2 = 0, 1
@@ -18,6 +18,26 @@ def fib(n):     # assumes that n > 0
 # Create the main Flask app object
 app = Flask(__name__)
 
+# Redis connector
+r = redis.Redis(host='redis', port=int(os.environ.get("PORT", 6379)))
+
+# Write a new key-value pair into Redis db (CREATE)
+@app.route('/keyval', methods=['POST', 'GET'])
+def post_keyval():
+	if request.method == 'POST':
+		key = request.args.get('key')
+		value = request.args.get('value')
+		command_out = "CREATE new-key/key-value"
+		if r.exists(key) == 0:
+			r.set(key, value)
+			result = "true"
+			error = ""
+			return jsonify(key = key, value = value, command = command_out, result = result, error = error), 200
+		else: 
+			result = "false"
+			error = "Unable to add pair: key already exists."
+			return jsonify(key = key, value = value, command = command_out, result = result, error = error), 409
+		
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
@@ -56,7 +76,7 @@ def slack_alert(text):
     slack_data = {'text': 'message'}
 
     # use the `requests` module to POST to Slack
-    req = requests.post(url, json=slack_data)
+    req = request.post(url, json=slack_data)
 
     # you can check the status code of the response from Slack
     if req.status_code == 200:
