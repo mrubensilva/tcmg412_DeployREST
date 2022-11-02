@@ -56,10 +56,10 @@ def slack_alert(text):
     slack_data = {'text': 'message'}
 
     # use the `requests` module to POST to Slack
-    r = requests.post(url, json=slack_data)
+    req = requests.post(url, json=slack_data)
 
     # you can check the status code of the response from Slack
-    if r.status_code == 200:
+    if req.status_code == 200:
        return jsonify(input = text, output = "it works")
 
     else:
