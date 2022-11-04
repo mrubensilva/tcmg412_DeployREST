@@ -22,22 +22,18 @@ app = Flask(__name__)
 r = redis.Redis(host='redis', port=int(os.environ.get("PORT", 6379)))
 
 # Write a new key-value pair into Redis db (CREATE)
-@app.route('/keyval', methods=['POST', 'GET'])
-def post_keyval():
-	if request.method == 'POST':
-		key = request.args.get('key')
-		value = request.args.get('value')
-		command_out = "CREATE new-key/key-value"
-		if r.exists(key) == 0:
-			r.set(key, value)
-			result = "true"
-			error = ""
-			return jsonify(key = key, value = value, command = command_out, result = result, error = error), 200
-		else: 
-			result = "false"
-			error = "Unable to add pair: key already exists."
-			return jsonify(key = key, value = value, command = command_out, result = result, error = error), 409
-		
+@app.route('/keyval', methods=['POST'])
+def post_keyval():	
+	key = request.args.get('key')
+	value = request.args.get('value')
+	command = "CREATE new-key/key-value"
+			
+	if r.exists(key) == 0:
+		r.set(key, value)
+		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+	elif r.exists(key) == 1:
+		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409	
+	
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
