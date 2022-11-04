@@ -20,20 +20,36 @@ app = Flask(__name__)
 
 # Redis connector
 r = redis.Redis(host='redis', port=int(os.environ.get("PORT", 6379)))
-
+		
 # Write a new key-value pair into Redis db (CREATE)
 @app.route('/keyval', methods=['POST'])
 def post_keyval():	
 	key = request.args.get('key')
 	value = request.args.get('value')
-	command = "CREATE new-key/key-value"
+	command = f"CREATE {key}/{value}"
 			
 	if r.exists(key) == 0:
 		r.set(key, value)
 		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
 	elif r.exists(key) == 1:
-		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409	
+		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
+
+# Delete Redis db value associated with key in string (DELETE)
+@app.route('/keyval/<string>', methods=['DELETE'])
+def del_keyval(string):	
+
+	key = string
+	command = f"DELETE {key}"
 	
+	if r.exists(key) == 1: 
+		value = f"{r.get(key)}"
+		r.delete(key)
+		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+				
+	if r.exists(key) == 0: 
+		value = ""
+		return jsonify(key = key, value = value, command = command, result = "false", error = "Key does not exist"), 404
+		
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
 # Pass value of '<string>' to 'string' in 'md5_encode' function
