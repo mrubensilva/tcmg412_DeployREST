@@ -23,7 +23,7 @@ r = redis.Redis(host='redis', port=int(os.environ.get("PORT", 6379)))
 
 @app.errorhandler(400)
 def handle_400(e):
-	return jsonify(error = "Invalid request"), 400
+	return jsonify(key = "", value = "", command = "", result = "false", error = "Invalid request"), 400
 		
 # Write a new key-value pair into Redis db (CREATE)
 @app.route('/keyval', methods=['POST'])
@@ -51,8 +51,7 @@ def del_keyval(string):
 		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
 				
 	if r.exists(key) == 0: 
-		value = ""
-		return jsonify(key = key, value = value, command = command, result = "false", error = "Key does not exist"), 404
+		return jsonify(key = key, value = "", command = command, result = "false", error = "Key does not exist"), 404
 		
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
