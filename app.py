@@ -3,7 +3,7 @@ import string
 import hashlib
 import redis
 from urllib import request, response
-from flask import Flask, jsonify, request, escape
+from flask import Flask, jsonify, request, escape, abort
 from slackeventsapi import SlackEventAdapter
 
 
@@ -20,6 +20,10 @@ app = Flask(__name__)
 
 # Redis connector
 r = redis.Redis(host='redis', port=int(os.environ.get("PORT", 6379)))
+
+@app.errorhandler(400)
+def handle_400(e):
+	return jsonify(error = "Invalid request"), 400
 		
 # Write a new key-value pair into Redis db (CREATE)
 @app.route('/keyval', methods=['POST'])
