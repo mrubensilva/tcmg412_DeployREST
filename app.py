@@ -26,32 +26,41 @@ def handle_400(e):
 	return jsonify(key = "", value = "", command = "", result = "false", error = "Invalid request"), 400
 		
 # Write a new key-value pair into Redis db (CREATE)
-@app.route('/keyval', methods=['POST'])
+@app.route('/keyval', methods=['POST', 'PUT'])
 def post_keyval():	
 	key = request.args.get('key')
 	value = request.args.get('value')
-	command = f"CREATE {key}/{value}"
+	
+	if request.method == 'POST':
+		command = f"CREATE {key}/{value}"		
+		if r.exists(key) == 0:
+			r.set(key, value)
+			return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+		elif r.exists(key) == 1:
+			return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
+
+	elif request.method == 'PUT':
+		command = f"UPDATE {key}/{value}"		
+		if r.exists(key) == 0:
+			return jsonify(key = key, value = value, command = command, result = "false", error = "Key does not exist"), 404
+		elif r.exists(key) == 1:
+			r.set(key, value)
+			return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200				
 			
-	if r.exists(key) == 0:
-		r.set(key, value)
-		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
-	elif r.exists(key) == 1:
-		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
 
 # Delete Redis db value associated with key in string (DELETE)
 @app.route('/keyval/<string>', methods=['DELETE'])
-def del_keyval(string):	
-
+def del_keyval(string):
 	key = string
 	command = f"DELETE {key}"
 	
 	if r.exists(key) == 1: 
 		value = f"{r.get(key)}"
 		r.delete(key)
-		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
-				
-	if r.exists(key) == 0: 
+		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200			
+	elif r.exists(key) == 0: 
 		return jsonify(key = key, value = "", command = command, result = "false", error = "Key does not exist"), 404
+		
 		
 # Set '/md5/<string>' app route
 @app.route('/md5/<string>')
