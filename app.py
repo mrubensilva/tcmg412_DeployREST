@@ -34,6 +34,24 @@ def post_keyval():
 		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
 	elif r.exists(key) == 1:
 		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
+#Read value given key
+@app.route('/keyval', methods=['GET'])
+def get_keyval():
+	try:
+
+		request_data = request.get_json()
+		key = request_data['key']
+		value = request_data['value']
+		command = f"READ {key}/{value}"
+		
+	except: return jsonify(key = "", value = "", command = "READ {key}/{value}", result = "false", error = "Invalid Request"), 404
+
+	if r.exists(key) == 1:
+		value = r.get(key)
+		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+
+	elif r.exists(key) == 0: 
+		return jsonify(key = key, value = value, command = command, result = "false", error = "key does not exist"), 404
 
 # Overwrite key-value pair in Redis db (UPDATE)
 @app.route('/keyval', methods=['PUT'])
