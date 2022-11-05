@@ -2,10 +2,9 @@ import os
 import string
 import hashlib
 import redis
-from urllib import request, response
-from flask import Flask, jsonify, request, escape, abort
+import requests
+from flask import Flask, jsonify, request, escape
 from slackeventsapi import SlackEventAdapter
-
 
 def fib(n):     # assumes that n > 0
     f_1, f_2 = 0, 1
@@ -20,39 +19,53 @@ app = Flask(__name__)
 
 # Redis connector
 r = redis.Redis(host='redis', port=int(os.environ.get("PORT", 6379)))
-
-@app.errorhandler(400)
-def handle_400(e):
-	return jsonify(key = "", value = "", command = "", result = "false", error = "Invalid request"), 400
 		
 # Write a new key-value pair into Redis db (CREATE)
-@app.route('/keyval', methods=['POST', 'PUT'])
+@app.route('/keyval', methods=['POST'])
 def post_keyval():	
-	key = request.args.get('key')
-	value = request.args.get('value')
 	
-	if request.method == 'POST':
-		command = f"CREATE {key}/{value}"		
-		if r.exists(key) == 0:
-			r.set(key, value)
-			return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
-		elif r.exists(key) == 1:
-			return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
+	try:
+		request_data = request.get_json()
+		key = request_data['key']
+		value = request_data['value']
+		command = f"CREATE {key}/{value}"
+	except:
+		return jsonify(key = "", value = "", command = "CREATE {key}/{value}", result = "false", error = "Invalid request"), 400
+	
+				
+	if r.exists(key) == 0:
+		r.set(key, value)
+		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+	elif r.exists(key) == 1:
+		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
 
-	elif request.method == 'PUT':
-		command = f"UPDATE {key}/{value}"		
-		if r.exists(key) == 0:
-			return jsonify(key = key, value = value, command = command, result = "false", error = "Key does not exist"), 404
-		elif r.exists(key) == 1:
-			r.set(key, value)
-			return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200				
+# Overwrite key-value pair in Redis db (UPDATE)
+@app.route('/keyval', methods=['PUT'])
+def put_keyval():
+	
+	try:
+		request_data = request.get_json()
+		key = request_data['key']
+		value = request_data['value']
+		command = f"UPDATE {key}/{value}"
+	except:
+		return jsonify(key = "", value = "", command = "UPDATE {key}/{value}", result = "false", error = "Invalid request"), 400	
+	
+	if r.exists(key) == 0:
+		return jsonify(key = key, value = value, command = command, result = "false", error = "Key does not exist"), 404
+	elif r.exists(key) == 1:
+		r.set(key, value)
+		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200				
 			
 
 # Delete Redis db value associated with key in string (DELETE)
 @app.route('/keyval/<string>', methods=['DELETE'])
 def del_keyval(string):
-	key = string
-	command = f"DELETE {key}"
+	try:
+		key = string
+		command = f"DELETE {key}"
+	except:
+		return jsonify(key = "", value = "", command = "DELETE {key}", result = "false", error = "Invalid request"), 400
 	
 	if r.exists(key) == 1: 
 		value = f"{r.get(key)}"
@@ -60,6 +73,7 @@ def del_keyval(string):
 		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200			
 	elif r.exists(key) == 0: 
 		return jsonify(key = key, value = "", command = command, result = "false", error = "Key does not exist"), 404
+
 		
 		
 # Set '/md5/<string>' app route
@@ -100,7 +114,7 @@ def slack_alert(text):
     slack_data = {'text': 'message'}
 
     # use the `requests` module to POST to Slack
-    req = request.post(url, json=slack_data)
+    req = requests.post(url, json=slack_data)
 
     # you can check the status code of the response from Slack
     if req.status_code == 200:
