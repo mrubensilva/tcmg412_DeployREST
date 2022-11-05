@@ -1,8 +1,4 @@
-import os
-import string
-import hashlib
-import redis
-import requests
+import os, string, hashlib, redis, requests
 from flask import Flask, jsonify, request, escape
 from slackeventsapi import SlackEventAdapter
 
