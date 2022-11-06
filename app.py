@@ -38,13 +38,11 @@ def post_keyval():
 @app.route('/keyval', methods=['GET'])
 def get_keyval():
 	try:
-
-		request_data = request.get_json()
-		key = request_data['key']
-		value = request_data['value']
-		command = f"READ {key}/{value}"
+		key = string
+		command = f"READ {key}"
 		
-	except: return jsonify(key = "", value = "", command = "READ {key}/{value}", result = "false", error = "Invalid Request"), 404
+	except: 
+		return jsonify(key = "", value = "", command = "READ {key}/{value}", result = "false", error = "Invalid Request"), 404
 
 	if r.exists(key) == 1:
 		value = r.get(key)
