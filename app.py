@@ -35,8 +35,8 @@ def post_keyval():
 	elif r.exists(key) == 1:
 		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
 #Read value given key
-@app.route('/keyval', methods=['GET'])
-def get_keyval():
+@app.route('/keyval/<string>', methods=['GET'])
+def get_keyval(string):
 	try:
 		key = string
 		command = f"READ {key}"
@@ -45,7 +45,7 @@ def get_keyval():
 		return jsonify(key = "", value = "", command = "READ {key}/{value}", result = "false", error = "Invalid Request"), 404
 
 	if r.exists(key) == 1:
-		value = r.get(key)
+		value = f"{r.get(key)}"
 		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
 
 	elif r.exists(key) == 0: 
