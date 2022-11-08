@@ -1,7 +1,9 @@
 import requests
 
+url = input("Enter a URL in the format 'http://x.x.x.x:4000/': ")
+
 def set_url(string):
-    return "https://app-6eu4mzqmma-uc.a.run.app/" + string
+    return url + string
 
 input_list = [
     "md5/test", 
@@ -84,6 +86,7 @@ def test_fib1():
     else:
         statcodes[9] = f"{'* [GET]': <10}{str(input_list[9]): ^15}{emoji_fail : >10}{line_break + ' - Expected output: ' + str(a): >10}{line_break + ' - Actual output: ' + str(d['output']): >10}"
 
+print(f"{line_break}Testing REST API on {url}...{line_break}")
 
 validate_200_status()
 
@@ -94,7 +97,5 @@ test_fib8()
 test_fib35()
 
 test_fib1()
-
-print("\nTesting REST API on localhost:4000...\n")
 
 print(*statcodes,sep='\n')
