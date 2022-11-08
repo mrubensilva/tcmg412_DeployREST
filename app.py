@@ -1,5 +1,10 @@
-import os, string, hashlib, redis, requests
+import os
+import string
+import hashlib
+import redis
+import requests
 from flask import Flask, jsonify, request, escape
+from urllib import request, response
 from slackeventsapi import SlackEventAdapter
 
 def fib(n):     # assumes that n > 0
