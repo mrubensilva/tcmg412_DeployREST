@@ -10,6 +10,5 @@ services:
         max-size: "200k"
     volumes:
       - .:/code
-    image: msilv204/tcmg412_restful_redis
   redis:
     image: "redis:alpine"
