@@ -2,6 +2,7 @@ import os
 import string
 import hashlib
 import redis
+import requests
 from flask import Flask, jsonify, request, escape
 from slackeventsapi import SlackEventAdapter
 
@@ -129,7 +130,7 @@ def slack_alert(text):
     slack_data = {'text': 'message'}
 
     # use the `requests` module to POST to Slack
-    req = request.post(url, json=slack_data)
+    req = requests.post(url, json=slack_data)
 
     # you can check the status code of the response from Slack
     if req.status_code == 200:
