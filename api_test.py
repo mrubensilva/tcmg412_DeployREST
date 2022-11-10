@@ -1,4 +1,5 @@
 import requests
+from random_word import RandomWords
 
 url = input("Enter a URL in the format 'http://x.x.x.x:4000/': ")
 
@@ -86,6 +87,45 @@ def test_fib1():
     else:
         statcodes[9] = f"{'* [GET]': <10}{str(input_list[9]): ^15}{emoji_fail : >10}{line_break + ' - Expected output: ' + str(a): >10}{line_break + ' - Actual output: ' + str(d['output']): >10}"
 
+def test_post_keyval():
+
+	random = RandomWords()
+	random_word = random.get_random_word()	
+	sample = f'"{random_word}"'
+	
+	post_url = url + "keyval"
+	new = requests.post(post_url, json={"key": sample, "value": sample})
+	used = requests.post(post_url, json={"key": sample, "value": sample})
+	
+	endpoint = f"{'* [POST]': <10}{'keyval': ^15}"
+	statcodes.append(endpoint)
+	
+	jsonResponse_new = new.json()
+	key_recv_new = jsonResponse_new["key"]
+	value_recv_new = jsonResponse_new["value"]
+	
+	jsonResponse_used = used.json() 
+	key_recv_used = jsonResponse_used["key"]
+	value_recv_used = jsonResponse_used["value"]
+	
+	if new.status_code == 200:
+					
+		test_new = f"{' - New Key Pair Test (' + key_recv_new + '/' + value_recv_new + ')': >10}{emoji_pass: >10}"
+		statcodes.append(test_new)
+	else:
+		error = jsonResponse_new["error"]
+		test_new_failed = f"{' - New Key Pair Test (' + key_recv_new + '/' + value_recv_new + ')': >10}{emoji_fail: >10}{line_break + '    - ' + error: >10}"
+		statcodes.append(test_new_failed)
+		
+	if used.status_code == 409:	
+		test_used = f"{' - Used Key Pair Test (' + sample + '/' + sample + ')': >10}{emoji_pass: >10}"
+		statcodes.append(test_used)
+	else:
+		error = jsonResponse_used["error"]
+		test_used_failed = f"{' - Used Key Pair Test (' + key_recv_used + '/' + value_recv_used + ')': >10}{emoji_fail: >10}{line_break + '    - Expected HTTP Status: 409': >10}{line_break + '    - Actual HTTP Status: ' + str(used.status_code): >10}"
+		statcodes.append(test_used_failed)	
+	
+
 print(f"{line_break}Testing REST API on {url}...{line_break}")
 
 validate_200_status()
@@ -97,5 +137,7 @@ test_fib8()
 test_fib35()
 
 test_fib1()
+
+test_post_keyval()
 
 print(*statcodes,sep='\n')
