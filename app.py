@@ -30,14 +30,14 @@ def post_keyval():
 		value = request_data['value']
 		command = f"CREATE {key}/{value}"
 	except:
-		return jsonify(key = "", value = "", command = "CREATE {key}/{value}", result = "false", error = "Invalid request"), 400
+		return jsonify(key = "", value = "", command = "CREATE {key}/{value}", result = False, error = "Invalid request"), 400
 	
 				
 	if r.exists(key) == 0:
 		r.set(key, value)
-		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+		return jsonify(key = key, value = value, command = command, result = True, error = ""), 200
 	elif r.exists(key) == 1:
-		return jsonify(key = key, value = value, command = command, result = "false", error = "Key already exists"), 409
+		return jsonify(key = key, value = value, command = command, result = False, error = "Key already exists"), 409
 #Read value given key
 @app.route('/keyval/<string>', methods=['GET'])
 def get_keyval(string):
@@ -46,14 +46,14 @@ def get_keyval(string):
 		command = f"READ {key}"
 		
 	except: 
-		return jsonify(key = "", value = "", command = "READ {key}/{value}", result = "false", error = "Invalid Request"), 404
+		return jsonify(key = "", value = "", command = "READ {key}/{value}", result = False, error = "Invalid Request"), 404
 
 	if r.exists(key) == 1:
 		value = f"{r.get(key)}"
-		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200
+		return jsonify(key = key, value = value, command = command, result = True, error = ""), 200
 
 	elif r.exists(key) == 0: 
-		return jsonify(key = key, value = value, command = command, result = "false", error = "key does not exist"), 404
+		return jsonify(key = key, value = value, command = command, result = False, error = "key does not exist"), 404
 
 # Overwrite key-value pair in Redis db (UPDATE)
 @app.route('/keyval', methods=['PUT'])
@@ -65,13 +65,13 @@ def put_keyval():
 		value = request_data['value']
 		command = f"UPDATE {key}/{value}"
 	except:
-		return jsonify(key = "", value = "", command = "UPDATE {key}/{value}", result = "false", error = "Invalid request"), 400	
+		return jsonify(key = "", value = "", command = "UPDATE {key}/{value}", result = False, error = "Invalid request"), 400	
 	
 	if r.exists(key) == 0:
-		return jsonify(key = key, value = value, command = command, result = "false", error = "Key does not exist"), 404
+		return jsonify(key = key, value = value, command = command, result = False, error = "Key does not exist"), 404
 	elif r.exists(key) == 1:
 		r.set(key, value)
-		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200				
+		return jsonify(key = key, value = value, command = command, result = True, error = ""), 200				
 			
 
 # Delete Redis db value associated with key in string (DELETE)
@@ -81,14 +81,14 @@ def del_keyval(string):
 		key = string
 		command = f"DELETE {key}"
 	except:
-		return jsonify(key = "", value = "", command = "DELETE {key}", result = "false", error = "Invalid request"), 400
+		return jsonify(key = "", value = "", command = "DELETE {key}", result = False, error = "Invalid request"), 400
 	
 	if r.exists(key) == 1: 
 		value = f"{r.get(key)}"
 		r.delete(key)
-		return jsonify(key = key, value = value, command = command, result = "true", error = ""), 200			
+		return jsonify(key = key, value = value, command = command, result = True, error = ""), 200			
 	elif r.exists(key) == 0: 
-		return jsonify(key = key, value = "", command = command, result = "false", error = "Key does not exist"), 404
+		return jsonify(key = key, value = "", command = command, result = False, error = "Key does not exist"), 404
 
 		
 		
