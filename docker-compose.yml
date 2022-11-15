@@ -5,10 +5,11 @@ services:
     ports:
       - "80:4000"
     logging:
-      driver: "json-file"
-      options: 
+      driver: gcplogs
         max-size: "200k"
     volumes:
       - .:/code
   redis:
     image: "redis:alpine"
+    logging:
+      driver: gcplogs
