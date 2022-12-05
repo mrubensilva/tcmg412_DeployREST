@@ -134,10 +134,10 @@ def slack_alert(text):
 
     # you can check the status code of the response from Slack
     if req.status_code == 200:
-       return jsonify(input = text, output = "it works")
+       return jsonify(input = text, output = True)
 
     else:
-        return "it doesnt work", 404
+        return jsonify(input = text, output = False), 404
 
 
 # Set '/is-prime/<int>' app route
