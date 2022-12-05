@@ -31,6 +31,17 @@ if args.COMMAND == 'factorial':
   except:
       print('Must use an integer for <input>')
 
+if args.COMMAND == 'fibonacci':
+  try:
+    int_arg = int(args.input)
+    url = 'http://35.208.233.80/fibonacci/' + str(int_arg)
+    x = requests.get(url)
+    jsonResponse = x.json()
+    output = jsonResponse['output']
+    print(output)
+  except:
+      print('Must use an integer for <input>')
+
 if args.COMMAND == 'is-prime':
   try:
     int_arg = int(args.input)
