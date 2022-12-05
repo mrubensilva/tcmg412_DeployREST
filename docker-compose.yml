@@ -2,6 +2,7 @@ version: "3.3"
 services:
   web:
     build: .
+    image: msilv204/tcmg412_restful_redis
     ports:
       - "80:4000"
     logging:
