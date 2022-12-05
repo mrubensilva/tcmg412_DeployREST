@@ -19,3 +19,14 @@ if args.COMMAND == 'md5':
   jsonResponse = x.json()
   output = jsonResponse['output']
   print(output)
+
+if args.COMMAND == 'factorial':
+  try:
+    int_arg = int(args.input)
+    url = 'http://35.208.233.80/factorial/' + str(int_arg)
+    x = requests.get(url)
+    jsonResponse = x.json()
+    output = jsonResponse['output']
+    print(float(output))
+  except:
+      print('Must use an integer for <input>')  
