@@ -127,7 +127,7 @@ def fibonacci(number=1):
 @app.route('/slack-alert/<text>')
 def slack_alert(text):
     url = "https://hooks.slack.com/services/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"  
-    slack_data = {'text': 'message'}
+    slack_data = {'text': text}
 
     # use the `requests` module to POST to Slack
     req = requests.post(url, json=slack_data)
