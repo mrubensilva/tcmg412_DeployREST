@@ -1,6 +1,5 @@
 import argparse
 import requests
-import json
 
 cmd_list = {
   'md5': 'Return the MD5 hash of the string <input>',
