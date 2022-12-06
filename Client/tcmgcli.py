@@ -1,26 +1,31 @@
 import argparse
 import requests
+import json
 
 cmd_list = {
-  'md5': 'Return the MD5 hash of the string input',
-  'factorial': 'Return the factorial of the integer input',
-  'fibonacci': 'Return an array of Fibonacci numbers <= the integer input',
-  'is-prime': 'Return a boolean to decide if the integer input is prime',
-  'slack-alert': 'Post input into Slack',
-  'redis': 'Use Redis database [INTERACTIVE, no input required]'
+  'md5': 'Return the MD5 hash of the string <input>',
+  'factorial': 'Return the factorial of the integer <input>',
+  'fibonacci': 'Return an array of Fibonacci numbers <= the integer <input>',
+  'is-prime': 'Return a boolean that decides if the integer <input> is prime',
+  'slack-alert': 'Post <input> to Slack',
+  'redis': 'Send <args> to Redis database'
 }
 
-parser = argparse.ArgumentParser(description='Access each endpoint in the REST API belonging to TCMG 412 Group 3.', usage='''tcmgcli.py COMMAND <input>\n
+parser = argparse.ArgumentParser(description='Access each endpoint in the REST API belonging to TCMG 412 Group 3.', usage='''tcmgcli.py COMMAND <args> <input>\n
 commands:
-  md5          Return the MD5 hash of the string input
-  factorial    Return the factorial of the integer input
-  fibonacci    Return an array of Fibonacci numbers <= the integer input
-  is-prime     Return a boolean to decide if the integer input is prime
-  slack-alert  Post input into Slack
-  redis        Use Redis database [INTERACTIVE, no input required]
+  md5          Return the MD5 hash of string <input>
+  factorial    Return the factorial of integer <input>
+  fibonacci    Return an array of Fibonacci numbers <= integer <input>
+  is-prime     Return a boolean that decides if integer <input> is prime
+  slack-alert  Post <input> to Slack
+  redis        Send <args> to Redis database
 ''')
-parser.add_argument('COMMAND', help = 'Subcommand to run (see "commands:")')
-parser.add_argument('input', help = 'String or integer argument')
+parser.add_argument('COMMAND', nargs='?', default=None, help = 'Subcommand to run (see above)')
+parser.add_argument('input', nargs='?', default=None, help = 'String or integer input')
+parser.add_argument('-k', '--key', dest='KEY', default=None, help='Use supplied value as key in redis command')
+parser.add_argument('-v', '--value', dest='VALUE', default=None, help='Use supplied value as value in redis command')
+parser.add_argument('-m', '--method', dest='METHOD', default=None, help='Use supplied value as HTTP method in redis command\nAccepted values are "put", "post", "get", "delete"')
+
 args = parser.parse_args()
 
 if args.COMMAND not in cmd_list:
@@ -74,3 +79,26 @@ if args.COMMAND == 'slack-alert':
   jsonResponse = x.json()
   output = jsonResponse['output']
   print(output)
+
+if args.KEY:
+	KEY = args.KEY
+else:
+	KEY = input('key: ')
+
+if args.VALUE:
+	VALUE = args.KEY
+else:
+	VALUE = input('value: ')
+
+if args.COMMAND == 'redis':
+  url = 'http://35.208.233.80/keyval'
+  m = args.METHOD
+  if m == 'put' or m == 'post':
+    r = requests.request(m, url, json={"key": str(args.KEY), "value": str(args.VALUE)})
+    print(r.json())
+  elif m == "get" or m == "delete":
+    r = requests.request(m, url + "/" + str(args.KEY))
+    print(r.json())
+  else:
+    parser.print_help()
+    exit(1)
