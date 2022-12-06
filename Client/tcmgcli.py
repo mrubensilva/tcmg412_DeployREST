@@ -22,9 +22,9 @@ commands:
 ''')
 parser.add_argument('COMMAND', nargs='?', default=None, help = 'Subcommand to run (see above)')
 parser.add_argument('input', nargs='?', default=None, help = 'String or integer input')
-parser.add_argument('-k', '--key', dest='KEY', default=None, help='Use supplied value as key in redis command')
-parser.add_argument('-v', '--value', dest='VALUE', default=None, help='Use supplied value as value in redis command')
-parser.add_argument('-m', '--method', dest='METHOD', default=None, help='Use supplied value as HTTP method in redis command\nAccepted values are "put", "post", "get", "delete"')
+parser.add_argument('-k', '--key', nargs='?', default=None, dest='KEY', help='Use supplied value as key in redis command')
+parser.add_argument('-v', '--value', nargs='?', default=None, dest='VALUE', help='Use supplied value as value in redis command')
+parser.add_argument('-m', '--method', nargs='?', default=None, dest='METHOD', help='Use supplied value as HTTP method in redis command\nAccepted values are "put", "post", "get", "delete"')
 
 args = parser.parse_args()
 
@@ -80,24 +80,28 @@ if args.COMMAND == 'slack-alert':
   output = jsonResponse['output']
   print(output)
 
-if args.KEY:
-	KEY = args.KEY
-else:
-	KEY = input('key: ')
-
-if args.VALUE:
-	VALUE = args.KEY
-else:
-	VALUE = input('value: ')
-
 if args.COMMAND == 'redis':
   url = 'http://35.208.233.80/keyval'
   m = args.METHOD
   if m == 'put' or m == 'post':
-    r = requests.request(m, url, json={"key": str(args.KEY), "value": str(args.VALUE)})
+    if args.KEY:
+	    KEY = args.KEY
+    else:
+	    KEY = input('key: ')
+      
+    if args.VALUE:
+	    VALUE = args.KEY
+    else:
+	    VALUE = input('value: ')
+    r = requests.request(m, url, json={"key": str(KEY), "value": str(VALUE)})
     print(r.json())
   elif m == "get" or m == "delete":
-    r = requests.request(m, url + "/" + str(args.KEY))
+    if args.KEY:
+	    KEY = args.KEY
+    else:
+	    KEY = input('key: ')
+  
+    r = requests.request(m, url + "/" + str(KEY))
     print(r.json())
   else:
     parser.print_help()
