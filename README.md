@@ -4,8 +4,8 @@
 MD5 encoder  
 Factorial calculator  
 Primality test  
-Fibonacci sequence calculator
-Slack alert bot (disabled to keep repo public)
+Fibonacci sequence calculator  
+Slack alert bot (disabled to keep repo public)  
 Key-value database storage via Redis 
 
 ## Build and Run with Docker Compose
