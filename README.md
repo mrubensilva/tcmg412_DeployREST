@@ -9,7 +9,7 @@ Slack alert bot (disabled to keep repo public)
 Key-value database storage via Redis 
 
 ## Build and Run with Docker Compose
-`git clone https://github.com/mrubensilva/tcmg412_DeployREST`  
+`git clone `git clone https://github.com/msil2/tcmg412_RESTful-API`  
 `cd tcmg412_DeployREST`  
 `docker login`  
 `docker compose up`
